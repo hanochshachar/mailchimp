@@ -11,7 +11,7 @@ using System.Text.RegularExpressions;
 /*static async Task Ping()
 {
         string dc = "us11";
-        string apikey = "19fed190534c46081801987717d1adef-us11";
+        string apikey = "";
         using (var httpClient = new HttpClient()) { 
     
         httpClient.BaseAddress = new Uri($"https://{dc}.api.mailchimp.com/3.0/");
@@ -31,7 +31,7 @@ await Ping();
 static async Task CreateList()
 {
     string dc = "us11";
-    string apikey = "19fed190534c46081801987717d1adef-us11";
+    string apikey = "";
 
     string event_name = "Bash Developers Meetup";
 
@@ -86,7 +86,7 @@ await CreateList();
 static async Task getLists()
 {
     string dc = "us11";
-    string apikey = "19fed190534c46081801987717d1adef-us11";
+    string apikey = "";
 
     using (HttpClient client = new HttpClient())
     {
@@ -127,7 +127,7 @@ await getLists();
 static async Task addContactToList()
 {
     string dc = "us11";
-    string apikey = "19fed190534c46081801987717d1adef-us11";
+    string apikey = "";
 
     string list_id = "4ac29a83ab";
     string user_email = "jj@kk.com";
@@ -168,7 +168,7 @@ await addContactToList();
 static async Task getCampaigns()
 {
     string dc = "us11";
-    string apikey = "19fed190534c46081801987717d1adef-us11";
+    string apikey = "";
 
     using(HttpClient client = new HttpClient())
     {
