@@ -7,11 +7,13 @@ using System.Net.Http.Headers;
 using System.Text;
 using static System.Net.Mime.MediaTypeNames;
 using System.Text.RegularExpressions;
+using mailchimp;
+using System.Net.Mail;
 
 /*static async Task Ping()
 {
         string dc = "us11";
-        string apikey = "19fed190534c46081801987717d1adef-us11";
+        string apikey = "";
         using (var httpClient = new HttpClient()) { 
     
         httpClient.BaseAddress = new Uri($"https://{dc}.api.mailchimp.com/3.0/");
@@ -31,7 +33,7 @@ await Ping();
 static async Task CreateList()
 {
     string dc = "us11";
-    string apikey = "19fed190534c46081801987717d1adef-us11";
+    string apikey = "";
 
     string event_name = "Bash Developers Meetup";
 
@@ -82,11 +84,11 @@ static async Task CreateList()
 }
 
 await CreateList();
-*/
+
 static async Task getLists()
 {
     string dc = "us11";
-    string apikey = "19fed190534c46081801987717d1adef-us11";
+    string apikey = "";
 
     using (HttpClient client = new HttpClient())
     {
@@ -96,18 +98,8 @@ static async Task getLists()
 
         var response = await client.GetAsync(url);
         string jsonResponse = await response.Content.ReadAsStringAsync();
-
-        string pattern = "\"id\":";
-
-        // Use the Matches method to find all occurrences of the word
-        MatchCollection matches = Regex.Matches(jsonResponse, pattern);
-
-        // Output the number of occurrences
-        int count = matches.Count;
-        //Console.WriteLine("The word '{0}' appears {1} times in the text.", pattern, count);
-        //Console.WriteLine(jsonResponse);
-       
-
+        Console.WriteLine(jsonResponse);
+        
         dynamic data = JsonConvert.DeserializeObject(jsonResponse);
 
         for (int i = 0; i < data.lists.Count; i++)
@@ -123,11 +115,11 @@ static async Task getLists()
 }
 
 await getLists();
-/*
+
 static async Task addContactToList()
 {
     string dc = "us11";
-    string apikey = "19fed190534c46081801987717d1adef-us11";
+    string apikey = "";
 
     string list_id = "4ac29a83ab";
     string user_email = "jj@kk.com";
@@ -165,10 +157,50 @@ static async Task addContactToList()
 
 await addContactToList(); 
 
+
+*/
+static async Task BatchSubscribeUnsubscribe()
+{
+    string dc = "us11";
+    string apikey = "";
+    string list_id = "4ac29a83ab";
+
+    Member[] members = new Member[3];
+
+    members[0] = new Member { email_address = "hanoch@gmail.com", status = "subscribed" };
+    members[1] = new Member { email_address = "ORI@gmail.com", status = "subscribed" };
+    members[2] = new Member { email_address = "moshe@gmail.com", status = "subscribed" };
+
+    var data = new
+    {
+        members = members,
+        sync_tags = false,
+        update_existing = false
+    };
+
+    var jsonData = new StringContent(
+            Newtonsoft.Json.JsonConvert.SerializeObject(data),
+            Encoding.UTF8,
+            "application/json"
+        );
+
+    using (HttpClient client = new HttpClient())
+    {
+        string url = $"https://{dc}.api.mailchimp.com/3.0/lists/{list_id}";
+
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("key", apikey);
+        var response = await client.PostAsync(url, jsonData);
+        var responseContent = await response.Content.ReadAsStringAsync();
+        Console.WriteLine(responseContent);
+    }
+}
+
+await BatchSubscribeUnsubscribe();
+/*
 static async Task getCampaigns()
 {
     string dc = "us11";
-    string apikey = "19fed190534c46081801987717d1adef-us11";
+    string apikey = "";
 
     using(HttpClient client = new HttpClient())
     {
